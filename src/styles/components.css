@@ -1,0 +1,877 @@
+/* ------------------------------------------------------------ */
+/* アプリの骨組み                                                 */
+/* ------------------------------------------------------------ */
+
+.app {
+  min-height: 100dvh;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: -100px;
+  z-index: 100;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 2px solid var(--color-focus);
+  border-radius: var(--radius-s);
+}
+.skip-link:focus {
+  top: var(--space-2);
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  padding-top: env(safe-area-inset-top);
+}
+
+.app-header__inner {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-4);
+  padding-left: max(var(--space-4), env(safe-area-inset-left));
+  padding-right: max(var(--space-4), env(safe-area-inset-right));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 3.5rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--color-text);
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+  min-height: var(--tap);
+  flex-shrink: 0;
+}
+
+.brand__mark {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 2.5px solid var(--color-primary);
+  transform: translateY(0.25rem);
+}
+
+.app-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.help-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  padding: 0.3rem 0.95rem;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.help-button.is-current {
+  outline: 2px solid var(--color-on-accent);
+  outline-offset: -4px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 44px;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--color-border-strong);
+  background: var(--color-surface);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.main {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4) calc(var(--nav-height) + var(--space-7) + env(safe-area-inset-bottom));
+  padding-left: max(var(--space-4), env(safe-area-inset-left));
+  padding-right: max(var(--space-4), env(safe-area-inset-right));
+}
+
+.app.is-immersive .main {
+  max-width: none;
+  padding: 0;
+}
+
+/* 画面下のナビゲーション（スマートフォン） */
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-nav ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0 max(var(--space-2), env(safe-area-inset-left));
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  max-width: 40rem;
+}
+
+.bottom-nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  min-height: var(--nav-height);
+  padding: 0.35rem 0.15rem 0.45rem;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 0.74rem;
+  line-height: 1.3;
+  text-align: center;
+  position: relative;
+}
+
+.bottom-nav a .icon {
+  width: 1.55rem;
+  height: 1.55rem;
+  padding: 0.1rem;
+  border-radius: 999px;
+}
+
+.bottom-nav a.is-current {
+  color: var(--color-text);
+  font-weight: 600;
+}
+.bottom-nav a.is-current .icon {
+  background: var(--color-sub);
+  width: 2.6rem;
+  padding: 0.15rem 0.55rem;
+}
+.bottom-nav a.is-current::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 30%;
+  right: 30%;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--color-primary-strong);
+}
+
+/* パソコンなど広い画面：ナビゲーションを左側に */
+@media (min-width: 64rem) {
+  .bottom-nav {
+    top: calc(3.5rem + 1px + 1rem);
+    bottom: auto;
+    left: max(1rem, calc((100vw - 64rem) / 2));
+    right: auto;
+    width: 12rem;
+    background: transparent;
+    border-top: 0;
+    padding: 0;
+  }
+  .bottom-nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0;
+  }
+  .bottom-nav a {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    min-height: 3rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: var(--radius-m);
+    font-size: 0.95rem;
+  }
+  .bottom-nav a.is-current {
+    background: var(--color-sub);
+  }
+  .bottom-nav a.is-current .icon {
+    background: none;
+    width: 1.55rem;
+    padding: 0.1rem;
+  }
+  .bottom-nav a.is-current::before {
+    top: 25%;
+    bottom: 25%;
+    left: 0;
+    right: auto;
+    width: 3px;
+    height: auto;
+    border-radius: 0 3px 3px 0;
+  }
+  .main {
+    padding-bottom: var(--space-7);
+    /* 左のナビゲーションと重ならないよう、その右側に本文を置く */
+    margin-left: calc(max(1rem, (100vw - 64rem) / 2) + 14rem);
+    margin-right: auto;
+  }
+  .app.is-immersive .main {
+    margin-left: 0;
+  }
+}
+
+/* ------------------------------------------------------------ */
+/* 見出し・セクション                                              */
+/* ------------------------------------------------------------ */
+
+.page-header {
+  margin-bottom: var(--space-5);
+}
+.page-header h1 {
+  margin-top: var(--space-1);
+}
+.page-header .lead {
+  margin-top: var(--space-3);
+  color: var(--color-text-muted);
+}
+.page-header .lead p:last-child {
+  margin-bottom: 0;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  min-height: 44px;
+  margin-left: -0.35rem;
+  padding: 0 0.5rem 0 0.15rem;
+  color: var(--color-link);
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+
+.section {
+  margin-top: var(--space-6);
+}
+.section__title {
+  font-size: 1.08rem;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ------------------------------------------------------------ */
+/* リンクの一覧                                                    */
+/* ------------------------------------------------------------ */
+
+.link-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-border);
+}
+.link-list > li {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.link-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 4rem;
+  padding: var(--space-3) var(--space-2);
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: var(--radius-s);
+}
+.link-row:hover {
+  background: var(--color-surface-2);
+}
+.link-row.is-large {
+  min-height: 5rem;
+  font-size: 1.12rem;
+}
+.link-row__icon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--color-notice-bg);
+}
+.link-row__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.link-row__label {
+  line-height: 1.55;
+}
+.link-row__hint {
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+  line-height: 1.6;
+  margin-top: 0.1rem;
+}
+.link-row__chevron {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
+/* ------------------------------------------------------------ */
+/* ボタン                                                         */
+/* ------------------------------------------------------------ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: var(--tap);
+  padding: 0.55rem 1.25rem;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.btn .icon {
+  flex-shrink: 0;
+}
+
+.btn--primary {
+  background: var(--color-primary-strong);
+  color: var(--color-on-primary);
+  border-color: var(--color-primary-strong);
+}
+.btn--primary:hover {
+  filter: brightness(1.06);
+}
+
+.btn--secondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+}
+.btn--secondary:hover {
+  background: var(--color-surface-2);
+}
+.btn--secondary[aria-pressed='true'] {
+  background: var(--color-sub);
+  border-color: var(--color-selected-border);
+}
+
+.btn--quiet {
+  background: transparent;
+  color: var(--color-link);
+  border-color: transparent;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+.btn--quiet:hover {
+  background: var(--color-surface-2);
+}
+.btn--quiet[aria-pressed='true'] {
+  background: var(--color-sub);
+  border-color: var(--color-selected-border);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.btn--small {
+  min-height: 44px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.9rem;
+}
+
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+}
+.actions--stack {
+  flex-direction: column;
+  align-items: stretch;
+}
+.actions--center {
+  justify-content: center;
+}
+
+@media (min-width: 36rem) {
+  .actions--stack {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* ------------------------------------------------------------ */
+/* 入力                                                           */
+/* ------------------------------------------------------------ */
+
+.field {
+  margin: var(--space-4) 0;
+}
+.field > label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-weight: 600;
+}
+.field__hint {
+  margin-top: var(--space-2);
+  font-size: 0.86rem;
+  color: var(--color-text-muted);
+}
+
+input[type='text'],
+textarea {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+  line-height: 1.8;
+  font-size: max(1rem, 16px); /* iOS で拡大されないよう 16px 以上 */
+}
+textarea {
+  resize: vertical;
+  min-height: 8rem;
+}
+input[type='text']:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+/* 選択肢（ラジオ） */
+.choice {
+  border: 0;
+  margin: var(--space-4) 0;
+  padding: 0;
+  min-width: 0;
+}
+.choice legend {
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: var(--space-2);
+}
+.choice__hint {
+  font-size: 0.86rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+.choice__options {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 26rem) {
+  .choice__options.cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .choice__options.cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.choice__option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: var(--tap);
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+  cursor: pointer;
+  line-height: 1.55;
+}
+.choice__option input,
+.chip input,
+.phrase input,
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  pointer-events: none;
+}
+.choice__mark,
+.chip__mark,
+.phrase__mark {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border-strong);
+  color: transparent;
+  background: var(--color-surface);
+}
+.chip__mark,
+.phrase__mark {
+  border-radius: 6px;
+}
+.choice__label {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.choice__option-hint {
+  font-size: 0.84rem;
+  color: var(--color-text-muted);
+}
+.choice__option.is-checked,
+.chip.is-checked,
+.phrase.is-checked {
+  background: var(--color-sub);
+  border-color: var(--color-selected-border);
+  border-width: 2px;
+}
+.choice__option.is-checked .choice__option-hint {
+  color: var(--color-text);
+}
+.choice__option.is-checked .choice__mark,
+.chip.is-checked .chip__mark,
+.phrase.is-checked .phrase__mark {
+  background: var(--color-primary-strong);
+  border-color: var(--color-primary-strong);
+  color: var(--color-on-primary);
+}
+.choice__option:has(input:focus-visible),
+.chip:has(input:focus-visible),
+.phrase:has(input:focus-visible),
+.switch:has(input:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* 複数選択のチップ */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: var(--tap);
+  padding: 0.4rem 1rem 0.4rem 0.7rem;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: var(--color-surface);
+  cursor: pointer;
+}
+
+/* 文の選択（意思伝達カード） */
+.phrase-list {
+  display: grid;
+  gap: var(--space-2);
+}
+.phrase {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 3.25rem;
+  padding: 0.6rem 0.9rem;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+  cursor: pointer;
+  line-height: 1.6;
+}
+
+/* スイッチ */
+.switch-row {
+  margin: var(--space-3) 0;
+}
+.switch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--tap);
+  padding: var(--space-2) 0;
+  cursor: pointer;
+  border-radius: var(--radius-s);
+}
+.switch__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.switch__hint {
+  font-size: 0.86rem;
+  color: var(--color-text-muted);
+}
+.switch__track {
+  flex-shrink: 0;
+  position: relative;
+  width: 3.1rem;
+  height: 1.8rem;
+  border-radius: 999px;
+  background: var(--color-surface-2);
+  border: 1.5px solid var(--color-border-strong);
+  transition: background-color 0.2s ease;
+}
+.switch__thumb {
+  position: absolute;
+  top: 50%;
+  left: 0.2rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: var(--color-border-strong);
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
+}
+.switch input:checked ~ .switch__track {
+  background: var(--color-primary-strong);
+  border-color: var(--color-primary-strong);
+}
+.switch input:checked ~ .switch__track .switch__thumb {
+  background: var(--color-on-primary);
+  transform: translate(1.25rem, -50%);
+}
+.switch__state {
+  flex-shrink: 0;
+  width: 2.2rem;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+/* 音量など */
+.range {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+}
+.range label {
+  font-weight: 600;
+}
+.range input[type='range'] {
+  width: 100%;
+  min-height: var(--tap);
+  accent-color: var(--color-primary-strong);
+}
+.range output {
+  min-width: 3rem;
+  text-align: right;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------ */
+/* お知らせ・ダイアログ・トースト                                     */
+/* ------------------------------------------------------------ */
+
+.notice {
+  display: flex;
+  gap: var(--space-3);
+  margin: var(--space-5) 0;
+  padding: var(--space-4);
+  border-radius: var(--radius-m);
+  background: var(--color-notice-bg);
+  font-size: 0.92rem;
+  line-height: 1.8;
+}
+.notice > .icon {
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+  color: var(--color-text-muted);
+}
+.notice p:last-child {
+  margin-bottom: 0;
+}
+.notice__title {
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+.notice--care {
+  background: var(--color-care-bg);
+}
+
+.dialog {
+  width: min(28rem, calc(100vw - 2rem));
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-l);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+.dialog::backdrop {
+  background: var(--color-backdrop);
+}
+.dialog__title {
+  font-size: 1.12rem;
+  margin-bottom: var(--space-3);
+}
+.dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--nav-height) + var(--space-4) + env(safe-area-inset-bottom));
+  z-index: 60;
+  max-width: calc(100vw - 2rem);
+  padding: 0.65rem 1.2rem;
+  border-radius: 999px;
+  background: var(--color-toast-bg);
+  color: var(--color-toast-text);
+  font-size: 0.92rem;
+  transform: translate(-50%, 0.5rem);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+.toast:empty {
+  padding: 0;
+}
+@media (min-width: 64rem) {
+  .toast {
+    bottom: var(--space-6);
+  }
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.05rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border-strong);
+  font-size: 0.78rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.details {
+  margin: var(--space-5) 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-m);
+  padding: 0 var(--space-4);
+  background: var(--color-surface);
+}
+.details > summary {
+  min-height: var(--tap);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  list-style-position: inside;
+}
+.details[open] {
+  padding-bottom: var(--space-3);
+}
+
+.plain-list {
+  margin: 0 0 var(--space-3);
+  padding-left: 1.3rem;
+}
+.plain-list li {
+  margin: 0.35rem 0;
+}
+
+.error {
+  color: var(--color-error);
+  font-weight: 600;
+}
+.success {
+  color: var(--color-success);
+}
+
+.external-link,
+.tel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 44px;
+}
+.external-link .icon,
+.tel-link .icon {
+  flex-shrink: 0;
+}
+
+/* 短い選択肢（ラジオ）を横に並べる */
+.choice__option--chip {
+  display: inline-flex;
+  min-height: var(--tap);
+  padding: 0.4rem 1rem 0.4rem 0.7rem;
+  border-radius: 999px;
+}
+
+/* ------------------------------------------------------------ */
+/* 日本語の改行：文節の途中で改行しにくくする（対応ブラウザのみ）            */
+/* ------------------------------------------------------------ */
+h1,
+h2,
+h3,
+.btn,
+.home-choice__label,
+.home-choice__hint,
+.link-row__label,
+.gentle-card__main,
+.quick-link,
+.more-link,
+.rest-stage__words,
+.together-words p,
+.reflect__lead,
+.choice__label,
+.phrase,
+.scene-option__label,
+.lead,
+.notice__title,
+.emergency__title {
+  word-break: auto-phrase;
+}
+h1 {
+  text-wrap: balance;
+}

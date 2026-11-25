@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <!--CSP-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" content="余白。何者にもならなくていい時間。心がつらいときの生活を、そっと支える無料のアプリです。登録・広告・追跡はありません。" />
+    <meta name="theme-color" content="#F4F2ED" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1F2622" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="余白。" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="./icons/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <title>余白。</title>
+    <!-- 表示設定（テーマ・文字サイズ）を描画前に反映するための小さなスクリプト。外部通信はしない。 -->
+    <script src="./boot.js"></script>
+  </head>
+  <body>
+    <noscript>
+      <p class="noscript">
+        余白。を使うには JavaScript を有効にしてください。<br />
+        命に関わる危険が迫っているときは、119番（救急）に連絡してください。
+      </p>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

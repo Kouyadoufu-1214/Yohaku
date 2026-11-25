@@ -1,0 +1,126 @@
+/*
+ * 余白。デザイントークン
+ * 指定パレット（背景 #F4F2ED / メイン #7C9485 / サブ #C7D3C5 / アクセント #D8C5A5 / 文字 #34423A）を基に、
+ * WCAG 2.2 AA のコントラスト比を満たすよう調整しています（tests/contrast.test.ts で検証）。
+ * - 強い原色・純粋な黒/白・彩度の高い赤は使わない
+ * - 情報は色だけで区別しない（✓印・枠線・文字を併用）
+ */
+
+:root {
+  color-scheme: light;
+  --color-bg: #f4f2ed;
+  --color-surface: #fbfaf7;
+  --color-surface-2: #eeece6;
+  --color-text: #34423a;
+  --color-text-muted: #55625a;
+  --color-primary: #7c9485; /* 装飾用（文字には使わない） */
+  --color-primary-strong: #4d6656; /* 主ボタンの背景 */
+  --color-on-primary: #fbfaf7;
+  --color-link: #3f5d4c;
+  --color-sub: #c7d3c5; /* 選択中の背景 */
+  --color-accent: #d8c5a5;
+  --color-on-accent: #34423a;
+  --color-border: #dcdfd7;
+  --color-border-strong: #748579; /* 入力欄など操作部品の枠（3:1以上） */
+  --color-selected-border: #4d6656;
+  --color-notice-bg: #e9ede6;
+  --color-care-bg: #f1e9da;
+  --color-emergency-bg: #efe3cf;
+  --color-focus: #34423a;
+  --color-toast-bg: #34423a;
+  --color-toast-text: #f4f2ed;
+  --color-error: #7a4a3a;
+  --color-success: #3f5d4c;
+  --color-backdrop: rgba(36, 44, 39, 0.45);
+
+  --radius-s: 10px;
+  --radius-m: 16px;
+  --radius-l: 22px;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --content-width: 40rem;
+  --nav-height: 4.25rem;
+  --tap: 48px;
+
+  --font-body: system-ui, -apple-system, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Noto Sans CJK JP', 'Yu Gothic UI', 'Yu Gothic', Meiryo, sans-serif;
+  --font-heading: 'Hiragino Maru Gothic ProN', 'Zen Maru Gothic', 'M PLUS Rounded 1c', var(--font-body);
+}
+
+/* ダークテーマ：端末設定に合わせる場合 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --color-bg: #1f2622;
+    --color-surface: #28302b;
+    --color-surface-2: #2f3833;
+    --color-text: #e6e3da;
+    --color-text-muted: #b4bbb2;
+    --color-primary: #9db5a6;
+    --color-primary-strong: #9db5a6;
+    --color-on-primary: #18201b;
+    --color-link: #a9c4b3;
+    --color-sub: #36463c;
+    --color-accent: #c9b48f;
+    --color-on-accent: #1f2622;
+    --color-border: #3a443e;
+    --color-border-strong: #6e7d73;
+    --color-selected-border: #9db5a6;
+    --color-notice-bg: #2b3530;
+    --color-care-bg: #352f27;
+    --color-emergency-bg: #3a3328;
+    --color-focus: #e6e3da;
+    --color-toast-bg: #e6e3da;
+    --color-toast-text: #1f2622;
+    --color-error: #e0b9a8;
+    --color-success: #a9c4b3;
+    --color-backdrop: rgba(10, 14, 12, 0.6);
+  }
+}
+
+/* ダークテーマ：手動で選んだ場合 */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: #1f2622;
+  --color-surface: #28302b;
+  --color-surface-2: #2f3833;
+  --color-text: #e6e3da;
+  --color-text-muted: #b4bbb2;
+  --color-primary: #9db5a6;
+  --color-primary-strong: #9db5a6;
+  --color-on-primary: #18201b;
+  --color-link: #a9c4b3;
+  --color-sub: #36463c;
+  --color-accent: #c9b48f;
+  --color-on-accent: #1f2622;
+  --color-border: #3a443e;
+  --color-border-strong: #6e7d73;
+  --color-selected-border: #9db5a6;
+  --color-notice-bg: #2b3530;
+  --color-care-bg: #352f27;
+  --color-emergency-bg: #3a3328;
+  --color-focus: #e6e3da;
+  --color-toast-bg: #e6e3da;
+  --color-toast-text: #1f2622;
+  --color-error: #e0b9a8;
+  --color-success: #a9c4b3;
+  --color-backdrop: rgba(10, 14, 12, 0.6);
+}
+
+/* 文字の大きさ（rem を基準にすべての大きさが変わる） */
+:root {
+  font-size: 106.25%;
+}
+:root[data-font='s'] {
+  font-size: 93.75%;
+}
+:root[data-font='l'] {
+  font-size: 118.75%;
+}
+:root[data-font='xl'] {
+  font-size: 137.5%;
+}
